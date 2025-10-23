@@ -1,0 +1,135 @@
+
+
+
+@if (filteredRequests().length > 0) {
+ @for (request of filteredRequests(); track request.id) {
+    <div
+    class="w-full bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col md:flex-row items-start">
+
+    <!-- Image -->
+    <div class="flex-shrink-0 pt-4 sm:p-0  rounded mx-auto md:mx-0 rounded-lg overflow-hidden">
+      <img src="https://picsum.photos/seed/mentor/200" alt="Mentor photo" class="w-full h-full object-cover rounded" />
+    </div>
+
+    <!-- Content -->
+    <div class="flex flex-col justify-between flex-1 p-4 space-y-3">
+
+      <!-- Title + Status -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <h2 class="text-xl font-bold text-brand-text truncate">{{request.goal}}</h2>
+
+        <span class="text-md font-medium px-2 py-0.5 rounded-full w-fit"
+          [class.bg-green-100]="request.status === 'accepted'" [class.text-green-700]="request.status === 'accepted'"
+          [class.bg-yellow-100]="request.status === 'pending'" [class.text-yellow-700]="request.status === 'pending'"
+          [class.bg-red-100]="request.status === 'rejected'" [class.text-red-700]="request.status === 'rejected'">
+          {{ request.status }}
+        </span>
+
+
+      </div>
+
+      <!-- Info rows -->
+      <div class="flex  flex-col sm:flex-col space-x-2  text-xs text-gray-600">
+        <div class="flex text-lg font-medium text-brand-text gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 text-blue-600" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.64 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>Mentor:
+  <a href="mentee/mentor-profile/{{ request.mentorId }}">
+                  {{ request.mentorProfile?.first_name }} {{ request.mentorProfile?.last_name }}
+                </a>
+            </span>
+        </div>
+
+
+        <div class="flex text-lg font-medium text-brand-text items-center gap-2 ">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 text-blue-600" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>
+            {{ request.createdAt?.toDate?.() | date:'MMMM d, y, h:mm a' }}
+          </span>
+        </div>
+
+
+      </div>
+
+      <!-- Description -->
+      <div class="text-sm  text-gray-700 leading-relaxed rounded-md line-clamp-3">
+        <span class="font-semibold  text-brand-text">Booking Description : </span> {{request.message}}
+
+      </div>
+
+      <!-- Buttons -->
+
+      <div class="flex flex-col sm:flex-row justify-end gap-2 pt-1">
+
+      @if(request.status == 'pending'){
+
+        <a href="/mentee/session/{{request.id}}"
+          class="bg-red-500 text-white rounded-md px-3 py-1.5 text-xs font-medium flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          Cancel
+        </a>
+      }
+      @if(request.status == 'accepted'){
+
+        <a href="/mentee/session/{{request.id}}"
+              class="bg-brand-primary text-white rounded-md px-3 py-1.5 text-xs font-medium flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                d="M15 12c0 2.21-1.79 4-4 4s-4-1.79-4-4 1.79-4 4-4 4 1.79 4 4z" />
+              <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274 1.057-.742 2.036-1.375 2.89" />
+              </svg>
+              View Booking details
+            </a>
+      }
+
+  <a href="mentee/mentor-profile/{{request.mentorId}}"
+    class="bg-gray-100 text-gray-700 rounded-md px-3 py-1.5 text-xs font-medium hover:bg-gray-200 flex items-center justify-center border border-gray-200">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor">
+      <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
+      <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 20v-1a6 6 0 0112 0v1" />
+    </svg>
+    View Mentor Profile
+  </a>
+      </div>
+
+    </div>
+
+  </div>
+  }
+
+  } @else {
+
+   <div class="flex flex-col items-center justify-center space-y-2 text-center py-6">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-12 h-12 text-gray-400"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+    />
+  </svg>
+  <p class="text-[24px] text-brand-text">No {{ status() }} requests yet.</p>
+</div>
+
+}

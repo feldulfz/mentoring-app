@@ -1,0 +1,19 @@
+<h1 class="text-xl sm:text-2xl font-bold">Profile</h1>
+
+<div class="mt-7">
+  <div class="bg-white rounded-xl p-5 shadow-sm">
+
+    <div class="px-4 sm:px-0">
+      <h3 class="text-base/7 font-semibold text-gray-900">My Information</h3>
+      <p class="mt-1 max-w-2xl text-sm/6 text-gray-500">Personal details </p>
+    </div>
+
+    <app-mentor-profile-form [form]="mentorProfileForm"></app-mentor-profile-form>
+
+    <div class="flex justify-end mt-5">
+      <button class="btn btn-primary" (click)="SaveProfile()">
+        Save Changes
+      </button>
+    </div>
+  </div>
+</div>

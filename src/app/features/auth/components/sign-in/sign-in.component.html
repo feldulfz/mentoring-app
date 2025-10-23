@@ -1,0 +1,152 @@
+<div>
+  <app-navbar></app-navbar>
+  <div class="min-h-[calc(100vh-72px)] bg-base-200 flex items-center justify-center">
+    <div class="card mx-auto w-full max-w-5xl shadow-xl">
+      <div class="grid md:grid-cols-2 grid-cols-1 bg-base-100 h-[620px] rounded-xl">
+        
+        <div class="hidden md:block">
+          <img 
+            src="./kenny-eliason.jpg" 
+            alt="Login illustration" 
+            class="w-full h-full object-cover rounded-l-xl"
+          />
+        </div>      
+
+        <!-- Right side (Login form) -->
+        <div class="flex items-center justify-center px-10">
+          <div class="w-full">
+            <h2 class="text-2xl font-semibold text-center">Login</h2>
+
+            <div class="h-4 mb-9">
+              @if (errorMessage()) {    
+                <div role="alert" class="alert alert-error alert-soft">
+                    <span>{{errorMessage()}}</span>
+                </div>                 
+              }           
+            </div>
+
+            <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="flex flex-col">
+
+            <!-- Role -->
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">Role</span>
+              </label>
+              <select 
+                  class="select select-bordered w-full mt-1" 
+                  formControlName="role" 
+                  required
+                >
+                <option value="" disabled selected>Select role</option>
+                <option value="mentee">Mentee</option>
+                <option value="mentor">Mentor</option>
+              </select>
+
+              <div class="h-3">
+                @if (role!.invalid && (role!.dirty || role!.touched || formSubmitted())) {
+                  @if (role!.hasError('required')) {                  
+                    <span class="text-error text-xs">Role is required.</span>                
+                  }
+                }          
+              </div>               
+            </div>            
+              
+              <!-- Email -->
+              <div class="form-control w-full mt-2">
+                <label class="label">
+                  <span class="label-text">Email</span>
+                </label>
+                <input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  class="input input-bordered w-full mt-1 placeholder-gray-400" 
+                  formControlName="email"
+                  required
+                />
+              </div>
+
+              <div class="h-4">
+                @if (email!.invalid && (email!.dirty || email!.touched || formSubmitted())) {
+                  @if (email!.hasError('required')) {                  
+                    <span class="text-error text-xs">Email is required.</span>                
+                  }
+                  @if (email!.hasError('email')) {
+                    <span class="text-error text-xs">Email must be in valid format.</span>                     
+                  }
+                }          
+              </div>
+
+              <!-- Password -->
+              <div class="form-control w-full mt-2">
+                <label class="label">
+                  <span class="label-text">Password</span>
+                </label>
+                <input 
+                  type="password" 
+                  placeholder="Enter your password" 
+                  class="input input-bordered w-full mt-1 placeholder-gray-400"
+                  formControlName="password" 
+                  required
+                />
+              </div>
+
+              <div class="h-4">
+                @if (password!.invalid && (password!.dirty || password!.touched || formSubmitted())) {
+                  @if (password!.hasError('required')) {                  
+                    <span class="text-error text-xs">Password is required.</span>                
+                  }
+                  @if (password!.hasError('minlength')) {
+                    <span class="text-error text-xs">Password must be at least 4 characters long.</span>                     
+                  }
+                }              
+              </div>
+
+              <label class="label justify-end mt-1">
+                <a [routerLink]="['/auth/forgot-password']" class="label-text-alt link link-hover text-sm">Forgot password?</a>
+              </label>       
+              
+              <div class="mt-4 relative">
+                <button type="submit" class="w-full bg-emerald-500 text-white font-medium px-5 py-2 rounded-sm hover:bg-emerald-600 transition-all duration-200 cursor-pointer">
+                  Login
+                </button>     
+
+                <!-- Loading spinner overlay -->
+                @if (isSubmissionInProgress()) {
+                  <div class="absolute inset-0 flex items-center justify-center bg-base-100/70">
+                    <span class="loading loading-spinner loading-lg"></span>
+                  </div>
+                }                  
+              </div>
+          
+              <div class="mt-2 relative">
+                <button type="button" class="btn w-full" (click)="onSignInWithGoogle()">
+                  <img src="/google_logo.svg" alt="Google logo" class="w-5 h-5 mr-2" /> Login with Google
+                </button>    
+                @if (isSubmissionInProgressForGoogleSignIn()) {
+                  <!-- Loading spinner overlay -->
+                  <div class="absolute inset-0 flex items-center justify-center bg-base-100/70">
+                    <span class="loading loading-spinner loading-lg"></span>
+                  </div>
+                }                           
+              </div>
+
+              <div class="text-center mt-4 text-sm">
+                Don’t have an account?              
+                Register as
+                <a [routerLink]="['/auth/sign-up-mentee']" class="ml-1 text-emerald-500 hover:underline cursor-pointer">
+                  Mentee
+                </a>
+                or
+                <a [routerLink]="['/auth/sign-up-mentor']" class="ml-1 text-emerald-500 hover:underline cursor-pointer">
+                  Mentor
+                </a>              
+              </div>
+
+            </form>                  
+          </div>        
+        </div>
+
+      </div>
+    </div>
+  </div>  
+</div>

@@ -1,0 +1,52 @@
+ <div class="overflow-hidden w-full relative max-w-6xl mx-auto" (mouseenter)="stopScroll.set(true)"
+    (mouseleave)="stopScroll.set(false)">
+    <!-- Left gradient -->
+    <div class="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent">
+    </div>
+
+    <!-- Marquee inner -->
+    <div class="marquee-inner flex w-fit" [style.animation-play-state]="stopScroll() ? 'paused' : 'running'"
+      [style.animation-duration]="animationDuration">
+      <div class="flex">
+
+        <div class="mx-4  relative group hover:scale-90 transition-all duration-300">
+          <app-mentor-card-2></app-mentor-card-2>
+         
+        </div>
+
+         <div class="mx-4  relative group hover:scale-90 transition-all duration-300">
+          <app-mentor-card-2></app-mentor-card-2>
+         
+        </div>
+
+
+         <div class="mx-4  relative group hover:scale-90 transition-all duration-300">
+          <app-mentor-card-2></app-mentor-card-2>
+         
+        </div>
+
+         <div class="mx-4  relative group hover:scale-90 transition-all duration-300">
+          <app-mentor-card-2></app-mentor-card-2>
+         
+        </div>
+
+         <div class="mx-4  relative group hover:scale-90 transition-all duration-300">
+          <app-mentor-card-2></app-mentor-card-2>
+         
+        </div>
+
+         <div class="mx-4  relative group hover:scale-90 transition-all duration-300">
+          <app-mentor-card-2></app-mentor-card-2>
+        </div>
+        
+        <div class=" mx-4 relative group hover:scale-90 transition-all duration-300">
+          <app-mentor-card-2></app-mentor-card-2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right gradient -->
+    <div
+      class="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent">
+    </div>
+  </div>

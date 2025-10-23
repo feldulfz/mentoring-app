@@ -1,0 +1,70 @@
+<div class="">
+    <p-table #dt [value]="resources()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true" [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+        [tableStyle]="{ 'min-width': '75rem' }">
+
+        <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+                <p-iconfield iconPosition="left">
+                    <p-inputicon>
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                        placeholder="Search keyword" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:20%">Type</th>
+                <th style="width:20%">Title</th>
+                <th style="width:20%">Description</th>
+                <th style="width:20%">Date</th>
+                <th style="width:20%">Action</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-resources>
+            <tr>
+                <td>
+                    <div class="flex items-center gap-1">
+                        @if(resources.type === 'file') {
+                        <span class="material-symbols-outlined">docs</span>
+                        }
+                        @if(resources.type === 'link') {
+                        <span class="material-symbols-outlined">link</span>
+                        }
+                        {{ resources.type }}
+                    </div>
+                </td>
+
+                <td>
+                    {{ resources.title }}
+                </td>
+
+                <td>
+                    {{ resources.description }}
+                </td>
+
+                <td>{{ resources.date | date: 'MMM d, y, h:mm a' }}</td>
+
+                <td>
+                    @if(resources.type === 'file') {
+                    <button pButton label="Download" severity="info" size="small"></button>
+                    }
+                    @if(resources.type === 'link') {
+                    <button pButton label="Open Link" severity="info" size="small"></button>
+                    }
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="3">No resources yet.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>

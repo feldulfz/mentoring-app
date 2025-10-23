@@ -1,0 +1,174 @@
+<button class="btn border-none w-full rounded-lg bg-emerald-500 text-white hover:bg-emerald-600" (click)="openModal()">See all session</button>
+
+<p-dialog
+  header="Choose Schedule"
+  [(visible)]="isOpen"
+  [modal]="true"
+  [dismissableMask]="true"
+  [style]="{ width: '60vw' }"
+  [breakpoints]="{ '960px': '90vw', '640px': '95vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="max-w-3xl"
+>
+
+    <!----------------------------->
+    <div class="flex justify-center">
+        <ol class="flex items-center w-full text-sm text-gray-500 font-medium sm:text-base mb-3 max-w-xl">
+
+            <li class="flex w-full items-center"
+                [ngClass]="currentStep >= 1 ? 'text-emerald-500' : 'text-gray-600'">
+
+                <div class="flex items-center whitespace-nowrap">
+                    <span
+                        class="w-6 h-6 rounded-full flex justify-center items-center mr-3 lg:w-10 lg:h-10"
+                        [ngClass]="{
+                        'bg-emerald-500 text-white': currentStep >= 1,
+                        'bg-gray-100 text-gray-600': currentStep < 1
+                        }">
+
+                        @if(currentStep > 1) {
+                        ✓
+                        } @else {
+                        1
+                        }
+                    </span>
+                    Schedule
+                </div>
+
+                <div class="flex-auto border mx-2"
+                    [ngClass]="currentStep > 1 ? 'border-emerald-500' : 'border-gray-300'"></div>
+            </li>
+
+            <li class="flex items-center" [ngClass]="currentStep >= 2 ? 'text-emerald-500' : 'text-gray-600'">
+
+                <div class="flex items-center whitespace-nowrap">
+                    <span
+                        class="w-6 h-6 border border-gray-300 rounded-full flex justify-center items-center mr-3 lg:w-10 lg:h-10"
+                        [ngClass]="{'bg-emerald-500 text-white border-none': currentStep >= 2, 'bg-gray-100 text-gray-600': currentStep < 2}">
+
+                        @if(currentStep > 2) {
+                        ✓
+                        } @else {
+                        2
+                        }
+                    </span>
+                    Details
+                </div>
+            </li>
+
+        </ol>
+    </div>
+    <!----------------------------->
+
+    <!----------------------------->
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+        @if(currentStep === 1) {
+            <div class="mt-2">
+                <div class="min-h-[350px]">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="flex-1 p-4 flex items-center justify-center">
+                            <app-calendar
+                            [availability]="availableSlots()"
+                            (dateSelected)="onDateSelected($event)">
+                            </app-calendar>
+                        </div>
+
+                        <div class="flex-1 p-4">
+                            <p class="text-sm font-medium text-gray-900 mb-3">
+                                Pick your time
+                                @if(selectedDate()) {
+                                    <span class="ml-2 text-sky-500">({{ selectedDate() }})</span>
+                                }
+                            </p>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
+                                @for(slot of selectedDateSlots(); track slot.id) {
+                                    <button
+                                        type="button"
+                                        (click)="selectSlot(slot.id)"
+                                        [class]="'px-2 py-1 text-sm font-medium border rounded-lg cursor-pointer transition ' +
+                                        (selectedSlotId() === slot.id ? 'bg-sky-50 text-sky-500 border-sky-300' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50')">
+                                        {{ slot.startAt | date: 'shortTime' }} - {{ slot.endAt | date: 'shortTime' }}
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h-3 ml-8">
+                        @if (errorMessage()) {
+                            <span class="text-error text-xs">{{ errorMessage() }}</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if(currentStep === 2) {
+
+            <div class="flex flex-col mt-2 space-y-4 p-4 min-h-[350px]">
+                <div class="form-control">
+                    <label for="">Goal</label>
+                    <input type="text" formControlName="goal"
+                        placeholder="e.g., “Resume Review”, “Improving my portfolio”, “Career guidance for UI design”"
+                        class="input w-full border border-gray-300 rounded-lg px-4 py-2 placeholder-gray-400" required />
+
+                    <div class="h-3">
+                        @if (goal!.invalid && (goal!.dirty || goal!.touched || formSubmitted())) {
+                            @if (goal!.hasError('required')) {
+                            <span class="text-error text-xs">Goal is required.</span>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="form-control">
+                    <label for="">Description / Context</label>
+                    <input type="text" formControlName="message"
+                        placeholder="e.g., “I want to learn how to prepare for UX job interviews and get feedback on my portfolio.”"
+                        class="textarea w-full border border-gray-300 rounded-lg px-4 py-2 placeholder-gray-400" required />
+
+                    <div class="h-3">
+                        @if (message!.invalid && (message!.dirty || message!.touched || formSubmitted())) {
+                            @if (message!.hasError('required')) {
+                            <span class="text-error text-xs">Context is required.</span>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="form-control flex flex-col">
+                    <label for="">Attachments (Optional)</label>
+                    <input type="file" formControlName="attachments" class="file-input file-input-md" />
+                </div>
+            </div>
+        }
+
+        <!----------------------------->
+        <div class="flex justify-end space-x-3 mt-8 border-t pt-4 border-gray-200">
+            @if(currentStep === 1) {
+            <div>
+                <p-button label="Cancel" severity="secondary" (click)="closeModal()"/>                    
+            </div>
+            <div>
+                <p-button label="Next" (click)="nextStep()"/>                
+            </div>
+            }
+            @if(currentStep === 2) {
+            <div>
+                <p-button label="Back" severity="secondary" (click)="prevStep()"/>                    
+            </div>
+            <div class="relative">
+                <p-button
+                    label="Submit"
+                    type="submit" 
+                    [loading]="isSubmissionInProgress()"
+                    [disabled]="isSubmissionInProgress()"
+                />
+            </div>
+            }
+        </div>
+        <!----------------------------->
+
+    </form>
+    <!----------------------------->
+
+</p-dialog>

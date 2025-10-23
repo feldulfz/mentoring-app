@@ -1,0 +1,33 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3">
+  <div class="bg-white rounded-xl shadow-sm">
+    <div class="stat space-y-3">
+      <div class="stat-title">Sessions Conducted</div>
+      <div class="stat-value">{{ mentorStats()?.totalCompletedSessions || 0}}</div>
+      <div class="stat-desc break-words whitespace-normal">Total sessions completed to date</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm">
+    <div class="stat space-y-3">
+      <div class="stat-title">Mentees Mentored</div>
+      <div class="stat-value">{{ mentorStats()?.uniqueMentees || 0}}</div>
+      <div class="stat-desc  break-words whitespace-normal">Number of unique mentees guided</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm">
+    <div class="stat space-y-3">
+      <div class="stat-title">Feedback Received</div>
+      <div class="stat-value">{{ mentorStats()?.totalFeedbackGiven || 0}}</div>
+      <div class="stat-desc  break-words whitespace-normal">Feedback given by mentees in sessions</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm">
+    <div class="stat space-y-3">
+      <div class="stat-title">Average Rating</div>
+      <div class="stat-value">{{ mentorStats()?.averageRating || 0}}★</div>
+      <div class="stat-desc  break-words whitespace-normal">Average rating from completed sessions</div>
+    </div>
+  </div>
+</div>

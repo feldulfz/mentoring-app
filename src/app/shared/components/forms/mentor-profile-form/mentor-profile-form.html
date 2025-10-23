@@ -1,0 +1,97 @@
+<form [formGroup]="form()" class="mt-6 border-t border-gray-100">
+  <dl class="divide-y divide-gray-100">
+
+    <!-- First Name -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">First Name</dt>
+      <input type="text" pInputText pSize="small" formControlName="first_name" />
+    </div>
+
+    <!-- Last Name -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Last Name</dt>
+      <input type="text" pInputText pSize="small" formControlName="last_name" />
+    </div>
+
+    <!-- Current Job -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Current Job</dt>
+      <input type="text" pInputText pSize="small" formControlName="current_job" />
+    </div>
+
+    <!-- Company -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Company</dt>
+      <input type="text" pInputText pSize="small" formControlName="company" />
+    </div>
+
+    <!-- Bio -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Bio</dt>
+      <textarea rows="3" pInputTextarea formControlName="bio" pSize="small"  class="w-full"></textarea>
+    </div>
+
+    <!-- Email -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Email Address</dt>
+      <input type="email" pInputText pSize="small" formControlName="email" readonly />
+    </div>
+
+    <!-- Country -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Country</dt>
+      <input type="text" pInputText pSize="small" formControlName="country" />
+    </div>
+
+    <!-- LinkedIn -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">LinkedIn</dt>
+      <input type="text" pInputText pSize="small" formControlName="linkedIn" />
+    </div>
+
+    <!-- Website -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Website</dt>
+      <input type="text" pInputText pSize="small" formControlName="website" />
+    </div>
+
+    <!-- Education -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Education</dt>
+      <input type="text" pInputText pSize="small" formControlName="education" />
+    </div>
+
+    <!-- School -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">School</dt>
+      <input type="text" pInputText pSize="small" formControlName="school" />
+    </div>
+
+    <!-- Professional Experience -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Years of Experience</dt>
+      <input type="number" pInputText pSize="small" formControlName="professional_years_experience" />
+    </div>
+
+    <!-- Expertise -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Expertise</dt>
+      <p-autocomplete formControlName="expertise" inputId="chips-blur" multiple fluid [typeahead]="false" [addOnBlur]="true" placeholder="Type and click outside to add..."/>
+    </div>
+
+    <!-- Skills -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Skills</dt>
+      <p-autocomplete formControlName="skills" inputId="chips-blur" multiple fluid [typeahead]="false" [addOnBlur]="true" placeholder="Type and click outside to add..."/>
+    </div>
+
+    <!-- Industries -->
+    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium text-gray-900">Industries</dt>
+
+       <p-autocomplete formControlName="industries" size="small" inputId="chips-blur" multiple fluid [typeahead]="false" [addOnBlur]="true" placeholder="Type and click outside to add..."
+    />
+    </div>
+
+  </dl>
+</form>

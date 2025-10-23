@@ -1,0 +1,25 @@
+<div class="form-control w-full">
+    <label class="label mb-1">
+        <span class="label-text">{{label()}}</span>
+    </label>    
+    <select 
+        class="select select-bordered w-full input-sm" 
+        [formControl]="control()" 
+        (change)="onSelectionChange()">
+
+        <option value="">{{ placeholder() }}</option>
+
+        @for (option of options(); track option) {
+        <option [ngValue]="propToBeBinded() ? option[propToBeBinded()!] : option">
+
+            @for (prop of optionsProps(); let i = $index; track i) {
+                <span>{{ option[prop] }}</span>
+                @if (i !== optionsProps().length - 1) {
+                <span> - </span>
+                }
+            }
+
+        </option>
+        }
+    </select>
+</div>

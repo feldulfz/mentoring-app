@@ -1,0 +1,48 @@
+<form class="max-w-xl mx-auto" (submit)="onSearch($event)">
+    <div class="flex">
+        <!-- Filter dropdown -->
+        <div class="relative">
+            <button type="button" (click)="toggleDropdown()"
+                class="inline-flex items-center px-4 py-2 bg-gray-100 rounded-s-lg">
+                Filter
+                <svg class="w-2.5 h-2.5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+
+            <div *ngIf="dropdownOpen" class="absolute mt-2 w-72 bg-white shadow-lg rounded-lg p-4 z-50">
+                <div class="mb-3">
+                    <label class="block text-sm font-medium mb-1">Skill</label>
+                    <select [(ngModel)]="selectedSkill" name="skill" class="w-full border p-2 rounded">
+                        <option value="">Select Skill</option>
+                        <option *ngFor="let skill of skills" [value]="skill">{{ skill }}</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-sm font-medium mb-1">Job Title</label>
+                    <select [(ngModel)]="selectedJobTitle" name="jobTitle" class="w-full border p-2 rounded">
+                        <option value="">Select Job Title</option>
+                        <option *ngFor="let job of jobTitles" [value]="job">{{ job }}</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end space-x-2">
+                    <button type="button" (click)="resetFilters()" class="text-sm text-gray-600">Reset</button>
+                    <button type="button" (click)="applyFilters($event)"
+                        class="text-sm bg-blue-600 text-white px-3 py-1 rounded">Apply</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative w-full">
+            <input type="search" [(ngModel)]="searchTerm" name="query" placeholder="Search mentors, tags, or industry"
+                class="border rounded-r-lg px-4 py-3 w-full" />
+            <button type="submit" class="absolute right-0 top-0 bottom-0 px-4 bg-blue-600 text-white rounded-r-lg">
+                Button
+            </button>
+        </div>
+    </div>
+</form>

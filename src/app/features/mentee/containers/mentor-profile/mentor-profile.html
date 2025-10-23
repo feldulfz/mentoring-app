@@ -1,0 +1,183 @@
+<div class="mt-10 max-w-[1280px] mx-auto px-5">
+    <app-jumbotron> Mentor Profile </app-jumbotron>
+
+    <!-- <section class="grid grid-cols-2">
+        <pre>{{availableSlots() | json}}</pre>    
+    </section> -->
+
+    <section>
+
+        <div class="flex flex-col md:flex-row gap-3">
+
+            <div class="flex bg-white border border-gray-200 rounded-xl shadow-sm w-full md:w-80 h-80 overflow-hidden">
+                <img class="object-cover w-full h-full rounded-xl" src="https://i.pravatar.cc/300" alt="Mentor profile">
+            </div>
+
+            <div
+                class="flex flex-col space-y-2 bg-white border border-gray-200 rounded-xl p-6 shadow-sm w-full md:flex-1">
+
+                <!-- ABOUT MENTOR -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3">
+
+                    <div class="flex flex-col sm:flex-row space-x-3 items-start sm:items-center">
+                        <h2 class="text-2xl font-bold text-gray-600">{{ mentorProfile()?.first_name }} {{
+                            mentorProfile()?.last_name }}</h2>
+                        <div class="flex items-center justify-center gap-1">
+                            <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 text-amber-400">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                                </path>
+                            </svg>
+                            <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 text-amber-400">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                                </path>
+                            </svg>
+                            <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 text-amber-400">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                                </path>
+                            </svg>
+                            <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 text-amber-400">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                                </path>
+                            </svg>
+                            <span class="text-xs text-gray-600 ml-2">(4 / 5)</span>
+                        </div>
+
+                    </div>
+                    <div
+                        class="flex space-x-1 w-fit text-center items-start justify-start sm:items-center justify-center rounded-full bg-emerald-100 px-2 py-0.5 ">
+                        <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="w-5 text-emerald-600">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2"
+                                stroke-linejoin="round" stroke-linecap="round"></path>
+                        </svg>
+                        <span class="text-md font-medium text-emerald-600">{{ mentorProfile()?.country }}</span>
+                    </div>
+                </div>
+
+                <p class="text-lg font-semibold text-gray-600 flex gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-600">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path>
+                    </svg>
+
+                    {{ mentorProfile()?.current_job }} at {{ mentorProfile()?.company}}
+                </p>
+
+                <p class="text-lg font-semibold text-gray-600 flex gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-600">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 5.6a1.65 1.65 0 0 0 1-1.51V4a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.19 0 .38 0 .6.02a2 2 0 0 1 0 4c-.22.01-.41.01-.6.98z">
+                        </path>
+                    </svg>
+                    @for(industry of mentorProfile()?.industries; track industry) {
+                    {{ industry }},
+                    }
+                </p>
+
+                <div class="flex gap-2">
+                    <div class="flex space-x-1">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-6 h-6 text-gray-600">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L3 12V3h9l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                            <circle cx="7.5" cy="7.5" r="1.5" />
+                        </svg>
+
+                        @for(experty of mentorProfile()?.expertise; track experty) {
+                        <app-tags [tag]="experty" [size]="'sm'"></app-tags>
+                        }
+                    </div>
+                </div>
+
+                <p class="text-gray-600 text-md line-clamp-4 mt-3">
+                    {{ mentorProfile()?.bio }}
+                </p>
+
+            </div>
+        </div>
+
+    </section>
+
+    <section class="pt-10">
+        <div class="flex flex-col sm:flex-row space-y-5 ">
+
+            <div class="w-88 flex flex-col order-1 sm:order-2 bg-white py-6 px-5 rounded-xl shadow-sm space-y-5 h-full">
+
+                <app-mentee-section-heading [title]="'Preferred Mentees'"></app-mentee-section-heading>
+
+                <div class=" flex  flex-wrap gap-2 ">
+                    <span
+                        class="text-sm text-emerald-800 bg-emerald-400/10 border border-emerald-200 rounded-full px-4 py-1">Students</span>
+
+                    <span
+                        class="text-sm text-emerald-800 bg-emerald-400/10 border border-emerald-200 rounded-full px-4 py-1">Students</span>
+                    <span
+                        class="text-sm text-emerald-800 bg-emerald-400/10 border border-emerald-200 rounded-full px-4 py-1">Unemployed</span>
+                    <span
+                        class="text-sm text-emerald-800 bg-emerald-400/10 border border-emerald-200 rounded-full px-4 py-1">Professionals</span>
+
+                </div>
+
+                <app-mentee-section-heading [title]="'Language'"></app-mentee-section-heading>
+
+                <div class=" flex  flex-wrap gap-2">
+                    <span
+                        class="text-sm text-emerald-800 bg-emerald-400/10 border border-emerald-200 rounded-full px-4 py-1">English</span>
+                    <span
+                        class="text-sm text-emerald-800 bg-emerald-400/10 border border-emerald-200 rounded-full px-4 py-1">Tagalog</span>
+
+                    <span
+                        class="text-sm text-emerald-800 bg-emerald-400/10 border border-emerald-200 rounded-full px-4 py-1">Dutch</span>
+
+                </div>
+
+                <app-mentee-section-heading [title]="'Next Availability'"></app-mentee-section-heading>
+
+                <div class="flex gap-2 flex-wrap overflow-x-auto pb-2 space-y-1">
+                    @for(slot of formattedSlots(); track slot) {                        
+                        <app-availability-card 
+                            [month]="slot.month"
+                            [day]="slot.day"
+                            [weekday]="slot.weekday"
+                            [startAt]="slot.startAt"
+                        >
+                        </app-availability-card>
+                    }
+                </div>
+
+                <app-book-mentor></app-book-mentor>
+
+            </div>
+
+
+            <div class="flex-1 flex-col border-gray-200 order-2 sm:order-1 space-y-8 py-6 px-5 ">
+                <app-mentee-section-heading [title]="'Overview'"></app-mentee-section-heading>
+
+
+                <!-- STATS BOX -->
+                <div class="mt-6 flex ">
+                    <app-stats-box [mentorStats]="mentorStats()"></app-stats-box>
+                </div>
+
+                <app-mentee-section-heading [title]="'Reviews'"></app-mentee-section-heading>
+
+                <div class="mt-5 bg-white rounded-xl p-5">                    
+                  <app-session-rating-card [completedRatedSessions]="completedRatedSessions()"></app-session-rating-card>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>

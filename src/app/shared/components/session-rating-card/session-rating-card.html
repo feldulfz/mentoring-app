@@ -1,0 +1,64 @@
+
+<div class="flex flex-wrap gap-5">
+
+  @if(completedRatedSessions().length !== 0){
+      @for(rating of completedRatedSessions(); track rating.id){
+
+        <div class="bg-white rounded-xl p-6  shadow-md border border-gray-100">
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex items-center">
+
+              <span class=" overflow-hidden  w-8 h-8 rounded-full mr-3"><img
+                  src="https://img.freepik.com/premium-vector/user-profile-icon-circle_1256048-12499.jpg?semt=ais_hybrid&w=740&q=80"
+                  class="flex object-cover w-full h-full transition-opacity !duration-500 opacity-0 data-[loaded=true]:opacity-100"
+                  alt="avatar" data-loaded="true"></span>
+              <div>
+                <p class="font-medium">{{rating.mentee.first_name}} {{rating.mentee.last_name}}</p>
+                <p class="text-xs text-gray-500">{{rating.slot.startAt | date: 'mediumDate' }}, {{ rating.slot.startAt | date: 'h:mm a' }} - {{ rating.slot.endAt | date: 'h:mm a' }}</p>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <p-rating [ngModel]="rating.ratingToMentor" readonly="true" [stars]="5" style="--p-rating-icon-active-color: #facc15; "/>
+            </div>
+          </div>
+          <div class="mb-4">
+
+              <p-tag severity="success" value="{{rating.about}}" class="my-2"/>
+            <p class="text-gray-700">{{rating.feedbackToMentor}}</p>
+          </div>
+          <div class="flex items-center text-xs text-gray-500"><svg xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--lucide mr-1"
+              width="14" height="14" viewBox="0 0 24 24">
+              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M8 2v4m8-4v4"></path>
+                <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                <path d="M3 10h18"></path>
+              </g>
+            </svg>
+            <div class="flex items-center justify-center space-x-3">
+              <span>Rating to Mentee:</span>
+
+              <p-rating [ngModel]="rating.ratingToMentee" readonly="true" [stars]="5" style="--p-rating-icon-active-color: #facc15;	--p-rating-icon-size: 12px;"/>
+            </div>
+
+          </div>
+
+        </div>
+      }
+  }@else {
+    <div class="flex flex-col items-center justify-center w-full p-6 rounded-lg">
+      <svg class="w-12 h-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 8c1.657 0 3-1.343 3-3S13.657 2 12 2 9 3.343 9 5s1.343 3 3 3zM6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+      </svg>
+
+      <h2 class="text-lg font-semibold text-gray-700">No Reviews Yet</h2>
+
+      <p class="text-gray-500 text-sm mt-1 text-center">
+        This mentor hasn't received any reviews yet.
+      </p>
+    </div>
+  }
+
+
+</div>

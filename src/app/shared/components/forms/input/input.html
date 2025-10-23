@@ -1,0 +1,16 @@
+<fieldset class="fieldset">
+  <div class="flex items-center space-x-2">
+    <legend class="fieldset-legend">
+      {{ label() }}
+      @if (required()) {
+        <span class="label text-red-500">*</span>
+      }
+    </legend>
+  </div>
+
+  <input
+    class="input placeholder-gray-400"
+    [type]="type()"
+    [placeholder]="placeholder()"
+  />
+</fieldset>

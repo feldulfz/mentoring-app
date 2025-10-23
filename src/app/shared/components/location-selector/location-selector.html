@@ -1,0 +1,62 @@
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+    
+    <div>
+        <app-drop-down label="Region" [control]="regionSelectedControl" [options]="regions" [optionsProps]="['region_name']"
+            placeholder="Select Region" (selectionChange)="onRegionChange()">      
+        </app-drop-down>         
+        <div class="h-3">
+            @if (regionSelected!.invalid && (regionSelected!.dirty || regionSelected!.touched || formSubmitted())) {
+                @if (regionSelected!.hasError('required')) {                  
+                    <span class="text-error text-xs">Region is required.</span>                
+                }
+            }          
+        </div>         
+    </div>
+
+    <div>
+        <app-drop-down label="Province" [control]="provinceSelectedControl" [options]="provinces" [optionsProps]="['name']"
+            placeholder="Select Province" (selectionChange)="onProvinceChange()">
+        </app-drop-down> 
+        <div class="h-3">
+            @if (provinceSelected!.invalid && (provinceSelected!.dirty || provinceSelected!.touched || formSubmitted())) {
+                @if (provinceSelected!.hasError('required')) {                  
+                    <span class="text-error text-xs">Province is required.</span>                
+                }
+            }          
+        </div>                  
+    </div>
+
+    <div>
+        <app-drop-down label="Municipality" [control]="municipalitySelectedControl" [options]="municipalities" [optionsProps]="['name']"
+            placeholder="Select Municipality" (selectionChange)="onMunicipalityChange()">
+        </app-drop-down>
+        <div class="h-3">
+            @if (municipalitySelected!.invalid && (municipalitySelected!.dirty || municipalitySelected!.touched || formSubmitted())) {
+                @if (municipalitySelected!.hasError('required')) {                  
+                    <span class="text-error text-xs">Municipality is required.</span>                
+                }
+            }          
+        </div>             
+    </div>
+
+    <div>
+        <app-drop-down label="Barangay" [control]="barangaySelectedControl" [options]="barangays" [optionsProps]="['name']"
+            placeholder="Select Barangay">
+        </app-drop-down>   
+        <div class="h-3">
+            @if (barangaySelected!.invalid && (barangaySelected!.dirty || barangaySelected!.touched || formSubmitted())) {
+                @if (barangaySelected!.hasError('required')) {                  
+                    <span class="text-error text-xs">Barangay is required.</span>                
+                }
+            }          
+        </div>                
+    </div>
+
+    <div class="w-full">
+        <label class="label mb-1">
+            <span class="label-text">Street</span>
+        </label>
+        <input type="text" class="input input-bordered w-full input-sm" [formControl]="streetInputControl"
+            placeholder="Enter street" />
+    </div>
+</div>

@@ -1,0 +1,100 @@
+<main class="mt-10 max-w-[1380px] mx-auto px-5 ">
+    <app-jumbotron> Find Your Next Mentor... </app-jumbotron>
+
+    <section>
+        <app-search-bar (searchSubmit)="handleSearch($event)"></app-search-bar>
+    </section>
+
+    <section class="pt-10">
+        <div class="mt-6 space-x-2 space-y-3 flex flex-wrap">
+            <app-tags [tag]="'Web Development'"></app-tags>
+            <app-tags [tag]="'Business'"></app-tags>
+            <app-tags [tag]="'Blockchain'"></app-tags>
+            <app-tags [tag]="'Accounting'"></app-tags>
+            <app-tags [tag]="'Engineering'"></app-tags>
+            <app-tags [tag]="'Ui/UX'"></app-tags>
+            <app-tags [tag]="'Web Development'"></app-tags>
+            <app-tags [tag]="'Business'"></app-tags>
+            <app-tags [tag]="'Blockchain'"></app-tags>
+            <app-tags [tag]="'Accounting'"></app-tags>
+            <app-tags [tag]="'Engineering'"></app-tags>
+            <app-tags [tag]="'Ui/UX'"></app-tags> <app-tags [tag]="'Web Development'"></app-tags>
+            <app-tags [tag]="'Business'"></app-tags>
+            <app-tags [tag]="'Blockchain'"></app-tags>
+            <app-tags [tag]="'Accounting'"></app-tags>
+            <app-tags [tag]="'Engineering'"></app-tags>
+            <app-tags [tag]="'Ui/UX'"></app-tags>
+        </div>
+    </section>
+
+    <section class="pt-10">
+        <app-mentee-section-heading [title]="'Top rated mentors'"></app-mentee-section-heading>
+
+        <div class="overflow-hidden w-full relative mx-auto mt-7" (mouseenter)="stopScroll.set(true)"
+            (mouseleave)="stopScroll.set(false)">
+
+            <div class="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent"></div>
+
+            <div class="marquee-inner flex w-fit" [style.animation-play-state]="stopScroll() ? 'paused' : 'running'"
+                [style.animation-duration]="animationDuration">
+
+                <div class="flex">
+                    @defer (when listOfMentors().length > 0) {
+                    @for (mentor of listOfMentors(); track mentor.id) {
+                    <div class="mx-4 relative group hover:scale-90 transition-all duration-300">
+                        <app-mentor-card 
+                            [uid]="mentor.uid" 
+                            [firstName]="mentor.first_name"
+                            [lastName]="mentor.last_name" 
+                            [currentJob]="mentor.current_job" 
+                            [company]="mentor.company"
+                            [expertise]="mentor.expertise" 
+                            [bio]="mentor.bio">
+                        </app-mentor-card>
+                    </div>
+                    }
+                    } @placeholder {
+                    <div>
+                        <p class="text-[24px]">No mentors yet...</p>
+                    </div>
+                    } @loading {
+                    <div>
+                        <p class="text-[24px]">Loading mentors...</p>
+                    </div>
+                    } @error {
+                    <div>
+                        <p class="text-[24px]">Error loading mentors</p>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div
+                class="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent">
+            </div>
+        </div>
+    </section>
+
+    <section class="pt-10">
+        <app-mentee-section-heading [title]="'Recommended for you'"></app-mentee-section-heading>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-1 gap-y-8 mt-6 place-items-center">
+            <app-mentor-card-2></app-mentor-card-2>
+            <app-mentor-card-2></app-mentor-card-2>
+            <app-mentor-card-2></app-mentor-card-2>
+            <app-mentor-card-2></app-mentor-card-2>
+        </div>
+    </section>
+
+    <section class="py-10">
+        <app-mentee-section-heading [title]="'Events'"></app-mentee-section-heading>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2  gap-x-4 gap-y-4 place-items-center ">
+            <app-mentor-card-wide />
+            <app-mentor-card-wide />
+            <app-mentor-card-wide />
+            <app-mentor-card-wide />
+        </div>
+    </section>
+
+</main>

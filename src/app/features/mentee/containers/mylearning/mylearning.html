@@ -1,0 +1,649 @@
+<p-toast />
+<p-confirmdialog />
+
+<div class="min-h-screen mt-10 max-w-[1380px] mx-auto px-5">
+  <app-jumbotron>Manage your Bookings</app-jumbotron>
+
+
+  <!-- <section>
+    <div class="grid grid-cols-3">
+      <pre>
+        {{menteesAllPendingRequest() | json}}
+      </pre>
+
+       <pre>
+        {{menteesAllReviewedSession() | json}}
+      </pre>
+
+
+    </div>
+
+  </section> -->
+
+  <p-tabs value="0" scrollable class="mt-10">
+    <p-tablist>
+      <ng-template #previcon>
+        <i class="pi pi-minus"></i>
+      </ng-template>
+
+
+
+      <!-- UPCOMING -->
+      <p-tab value="0" class="flex items-center !gap-2">
+        <span class="font-bold whitespace-nowrap">UPCOMING</span>
+        @if(menteesAllUpcomingSession().length) {
+        <p-badge [value]="menteesAllUpcomingSession().length" severity="success" />
+        }
+      </p-tab>
+
+      <!-- PENDING -->
+      <p-tab value="1" class="flex items-center !gap-2">
+        <span class="font-bold whitespace-nowrap">PENDING</span>
+        @if(menteesAllPendingRequest().length) {
+        <p-badge [value]="menteesAllPendingRequest().length" severity="success" />
+        }
+      </p-tab>
+
+      <!-- DECLINED -->
+      <p-tab value="2" class="flex items-center !gap-2">
+        <span class="font-bold whitespace-nowrap">DECLINED</span>
+        @if(menteesAllDeclinedRequest().length) {
+        <p-badge [value]="menteesAllDeclinedRequest().length" severity="warn" />
+        }
+      </p-tab>
+
+      <!-- MISSED -->
+      <p-tab value="6" class="flex items-center !gap-2">
+        <span class="font-bold whitespace-nowrap">MISSED</span>
+        @if(menteesAllMissedSession().length) {
+        <p-badge [value]="menteesAllMissedSession().length" severity="warn" />
+        }
+      </p-tab>
+
+      <!-- CANCELLED -->
+      <p-tab value="5" class="flex items-center !gap-2">
+        <span class="font-bold whitespace-nowrap">CANCELLED</span>
+        @if(menteesAllCancelledSession().length) {
+        <p-badge [value]="menteesAllCancelledSession().length" severity="warn" />
+        }
+      </p-tab>
+
+      <!-- COMPLETED -->
+      <p-tab value="3" class="flex items-center !gap-2">
+        <span class="font-bold whitespace-nowrap">COMPLETED</span>
+        @if(menteesAllCompletedSession().length) {
+        <p-badge [value]="menteesAllCompletedSession().length" severity="info" />
+        }
+      </p-tab>
+
+
+      <!-- REVIEWED -->
+      <p-tab value="4" class="flex items-center !gap-2">
+        <span class="font-bold whitespace-nowrap">REVIEWED</span>
+        @if(menteesAllReviewedSession().length) {
+        <p-badge [value]="menteesAllReviewedSession().length" severity="info" />
+        }
+      </p-tab>
+
+
+      <ng-template #nexticon>
+        <i class="pi pi-plus"></i>
+      </ng-template>
+    </p-tablist>
+
+    <p-tabpanels>
+      <!-- UPCOMING -->
+      <p-tabpanel value="0">
+        <p-table #dt [value]="menteesAllUpcomingSession()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+          [paginator]="true" [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+          [tableStyle]="{ 'min-width': '75rem' }">
+          <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+              <p-iconfield iconPosition="left">
+                <p-inputicon>
+                  <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                  placeholder="Search keyword" />
+              </p-iconfield>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Request Date</th>
+              <th>Mentor</th>
+              <th>About</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Meeting Link</th>
+              <th>Action</th>
+
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-session>
+            <tr>
+              <td>
+                {{ session.createdAt?.seconds * 1000 | date: 'MMM d, y, h:mm a' }}
+              </td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <img [alt]="session.mentorProfile.first_name" [src]="'/dumy_img.png'" width="32"
+                    style="vertical-align: middle" />
+                  <span> {{ session.mentorProfile.first_name }} {{ session.mentorProfile.last_name }} </span>
+                </div>
+              </td>
+              <td>{{session.about}}</td>
+              <td>{{ session.slot.startAt | date: 'MMM d, y' }}</td>
+              <td>{{ session.slot.startAt | date: 'h:mm a' }}- {{ session.slot.endAt | date: 'h:mm a' }}</td>
+              <td><p-tag [value]="session.status" [severity]="TagStatus(session.status)" /></td>
+
+              <td>
+                @if(session.meetingLink !==''){
+                <a [href]="session.meetingLink" class="" target="_blank" pButton size="small" severity="info">
+                  <span pButtonLabel>Join Meeting</span>
+                </a>
+                }@else {
+                Meeting not yet set.
+                }
+              </td>
+
+              <td>
+                <div class="flex space-x-2 items-center">
+                  <p-button icon="pi pi-pen-to-square" (onClick)="showSessionInfoEdit(session.id)" class="mr-2"
+                    [rounded]="true" [outlined]="true" />
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+
+              <td colspan="8">No upcoming session.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+      <!-- PENDING -->
+      <p-tabpanel value="1">
+        <p-table #dt [value]="menteesAllPendingRequest()" dataKey="slotId" [rows]="10"
+          [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+          [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+          [tableStyle]="{ 'min-width': '75rem' }">
+          <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+              <p-iconfield iconPosition="left">
+                <p-inputicon>
+                  <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                  placeholder="Search keyword" />
+              </p-iconfield>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Request Date</th>
+              <th>Mentor</th>
+              <th>About</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-request>
+            <tr>
+
+              <td>
+                {{ request.createdAt?.seconds * 1000 | date: 'MMM d, y, h:mm a' }}
+              </td>
+
+              <td>
+                <div class="flex items-center gap-3">
+                  <img [alt]="request.mentorProfile.first_name" [src]="'/dumy_img.png'" width="32"
+                    style="vertical-align: middle" />
+                  <span> {{ request.mentorProfile.first_name }} {{ request.mentorProfile.last_name }} </span>
+                </div>
+              </td>
+
+              <td>
+                {{ request.goal }}
+              </td>
+
+              <td>
+                {{ request.slot.startAt | date: 'MMM d, y' }}
+              </td>
+
+              <td>
+                {{ request.slot.startAt | date: 'h:mm a' }}- {{ request.slot.endAt | date: 'h:mm a' }}
+              </td>
+
+              <td>
+                <p-tag [value]="request.status" [severity]="TagStatus(request.status)" />
+              </td>
+
+              <td>
+                <p-button icon="pi pi-pen-to-square" (onClick)="showRequestInfoEdit(request.id)" class="mr-2"
+                  [rounded]="true" [outlined]="true" />
+
+                <p-button icon="pi pi-trash" severity="warn" (onClick)="cancelBooking($event, request.id!)" class="mr-2"
+                  [rounded]="true" [outlined]="true" />
+
+
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No pending mentorship requests found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+      <!-- DECLINED -->
+      <p-tabpanel value="2">
+        <p-table #dt [value]="menteesAllDeclinedRequest()" dataKey="slotId" [rows]="10"
+          [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+          [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+          [tableStyle]="{ 'min-width': '75rem' }">
+          <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+              <p-iconfield iconPosition="left">
+                <p-inputicon>
+                  <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                  placeholder="Search keyword" />
+              </p-iconfield>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width:14.29%">Request Date</th>
+              <th style="width:14.29%">Mentor</th>
+              <th style="width:14.29%">About</th>
+              <th style="width:14.29%">Date</th>
+              <th style="width:14.29%">Time</th>
+              <th style="width:14.29%">Status</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-request>
+            <tr>
+
+              <td>
+                {{ request.createdAt?.seconds * 1000 | date: 'MMM d, y, h:mm a' }}
+              </td>
+
+              <td>
+                <div class="flex items-center gap-3">
+                  <img [alt]="request.mentorProfile.first_name" [src]="'/dumy_img.png'" width="32"
+                    style="vertical-align: middle" />
+                  <span> {{ request.mentorProfile.first_name }} {{ request.mentorProfile.last_name }} </span>
+                </div>
+              </td>
+
+              <td>
+                {{ request.goal }}
+              </td>
+
+              <td>
+                {{ request.slot.startAt | date: 'MMM d, y' }}
+              </td>
+
+              <td>
+                {{ request.slot.startAt | date: 'h:mm a' }}- {{ request.slot.endAt | date: 'h:mm a' }}
+              </td>
+
+              <td>
+                <p-tag [value]="'declined'" [severity]="TagStatus(request.status)" />
+              </td>
+
+
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No declined mentorship requests found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+      <!-- COMPLETED -->
+      <p-tabpanel value="3">
+        <p-table #dt [value]="menteesAllCompletedSession()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+          [paginator]="true" [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+          [tableStyle]="{ 'min-width': '75rem' }">
+          <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+              <p-iconfield iconPosition="left">
+                <p-inputicon>
+                  <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                  placeholder="Search keyword" />
+              </p-iconfield>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width:14.29%">Request Date</th>
+              <th style="width:14.29%">Mentor</th>
+              <th style="width:14.29%">About</th>
+              <th style="width:14.29%">Date</th>
+              <th style="width:14.29%">Time</th>
+              <th style="width:14.29%">Status</th>
+              <th style="width:14.29%">Action</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-session>
+            <tr>
+
+              <td>{{ session.createdAt?.seconds * 1000 | date: 'MMM d, y, h:mm a' }}</td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <img [alt]="session.mentorProfile.first_name" [src]="'/dumy_img.png'" width="32"
+                    style="vertical-align: middle" />
+                  <span> {{ session.mentorProfile.first_name }} {{ session.mentorProfile.last_name }} </span>
+                </div>
+              </td>
+              <td>{{ session.about }}</td>
+              <td>{{ session.slot.startAt | date: 'MMM d, y' }}</td>
+              <td>{{ session.slot.startAt | date: 'h:mm a' }} - {{ session.slot.endAt | date: 'h:mm a' }}</td>
+              <td><p-tag [value]="session.status" [severity]="TagStatus(session.status)" /></td>
+              <td>
+                <p-button icon="pi pi-star" (onClick)="showSessionRatingDialog(session.id)" class="mr-2"
+                  [rounded]="true" [outlined]="true" />
+              </td>
+
+              <!-- <td>
+                  <div class="flex items-center justify-center gap-2">
+                    <a [routerLink]="['/mentee/mylearning/session',session.slotId]" pButton severity="info">
+                      <span pButtonLabel>View</span>
+                    </a>
+                    <a pButton severity="secondary">
+                      <span pButtonLabel>Manage</span>
+                    </a>
+                  </div>
+                </td> -->
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No completed session yet.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+      <!-- REVIEWED -->
+      <p-tabpanel value="4">
+        <p-table #dt [value]="menteesAllReviewedSession()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+          [paginator]="true" [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+          [tableStyle]="{ 'min-width': '75rem' }">
+          <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+              <p-iconfield iconPosition="left">
+                <p-inputicon>
+                  <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                  placeholder="Search keyword" />
+              </p-iconfield>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Request Date</th>
+              <th>Mentor</th>
+              <th>About</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Rating to Mentor</th>
+              <th>Rating to Mentee</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+
+
+
+          <ng-template pTemplate="body" let-session>
+            <tr>
+              <td>{{ session.createdAt.toDate() | date: 'MMM d, y, h:mm a' }}</td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <img [alt]="session.mentorProfile.first_name" [src]="'/dumy_img.png'" width="32"
+                    style="vertical-align: middle" />
+                  <span> {{ session.mentorProfile.first_name }} {{ session.mentorProfile.last_name }} </span>
+                </div>
+              </td>
+              <td>{{ session.about }}</td>
+              <td>{{ session.slot.startAt | date: 'MMM d, y' }}</td>
+              <td>{{ session.slot.startAt | date: 'h:mm a' }} - {{ session.slot.endAt | date: 'h:mm a' }}</td>
+
+              <td>
+                @if(session.ratingToMentor !== 0){
+                <p-rating [ngModel]="session.ratingToMentor" [stars]="5" name="ratingValue" readonly="true" size="large"
+                  style="--p-rating-icon-active-color: #facc15;	" />
+
+                }@else {
+                No Ratings found
+                }
+              </td>
+
+              <td>
+                @if(session.ratingToMentee !== 0){
+                <p-rating [ngModel]="session.ratingToMentee" [stars]="5" name="ratingValue" readonly="true" size="large"
+                  style="--p-rating-icon-active-color: #facc15;	" />
+
+                }@else {
+                No Ratings found
+                }
+
+              </td>
+
+              <td><p-tag [value]="session.status" [severity]="TagStatus(session.status)" /></td>
+
+
+              <td class="space-x-2">
+                <p-button icon="pi pi-star" (onClick)="showSessionRatingDialog(session.id)" class="mr-2"
+                  [rounded]="true" [outlined]="true" />
+              </td>
+
+            </tr>
+          </ng-template>
+
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="9">No reviewed session yet.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+      <!-- CANCELLED -->
+      <p-tabpanel value="5">
+        <p-table #dt [value]="menteesAllCancelledSession()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+          [paginator]="true" [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+          [tableStyle]="{ 'min-width': '75rem' }">
+          <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+              <p-iconfield iconPosition="left">
+                <p-inputicon>
+                  <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                  placeholder="Search keyword" />
+              </p-iconfield>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width:14.29%">Request Date</th>
+              <th style="width:14.29%">Mentor</th>
+              <th style="width:14.29%">About</th>
+              <th style="width:14.29%">Date</th>
+              <th style="width:14.29%">Time</th>
+              <th style="width:14.29%">Status</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-session>
+            <tr>
+
+              <td>{{ session.createdAt?.seconds * 1000 | date: 'MMM d, y, h:mm a' }}</td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <img [alt]="session.mentorProfile.first_name" [src]="'/dumy_img.png'" width="32"
+                    style="vertical-align: middle" />
+                  <span> {{ session.mentorProfile.first_name }} {{ session.mentorProfile.last_name }} </span>
+                </div>
+              </td>
+              <td>{{ session.about }}</td>
+              <td>{{ session.slot.startAt | date: 'MMM d, y' }}</td>
+              <td>{{ session.slot.startAt | date: 'h:mm a' }}- {{ session.slot.endAt | date: 'h:mm a' }}</td>
+              <td><p-tag [value]="session.status" [severity]="TagStatus(session.status)" /></td>
+
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6">No cancelled session found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+      <!-- MISSED -->
+      <p-tabpanel value="6">
+        <p-table #dt [value]="menteesAllMissedSession()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+          [paginator]="true" [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+          [tableStyle]="{ 'min-width': '75rem' }">
+          <ng-template pTemplate="caption">
+            <div class="flex justify-end">
+              <p-iconfield iconPosition="left">
+                <p-inputicon>
+                  <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                  placeholder="Search keyword" />
+              </p-iconfield>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Request Date</th>
+              <th>Mentor</th>
+              <th>About</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-session>
+            <tr>
+
+              <td>
+                {{ session.createdAt?.seconds * 1000 | date: 'MMM d, y, h:mm a' }}
+              </td>
+
+              <td>
+                <div class="flex items-center gap-3">
+                  <img [alt]="session.mentorProfile.first_name" [src]="'/dumy_img.png'" width="32"
+                    style="vertical-align: middle" />
+                  <span> {{ session.mentorProfile.first_name }} {{ session.mentorProfile.last_name }} </span>
+                </div>
+              </td>
+
+              <td>
+                {{ session.about }}
+              </td>
+
+              <td>
+                {{ session.slot.startAt | date: 'MMM d, y' }}
+              </td>
+
+              <td>
+                {{ session.slot.startAt | date: 'h:mm a' }}- {{ session.slot.endAt | date: 'h:mm a' }}
+              </td>
+
+              <td>
+                <p-tag [value]="session.status" [severity]="TagStatus(session.status)" />
+              </td>
+
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6">No missed session found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+    </p-tabpanels>
+  </p-tabs>
+
+
+  <!-- REQUEST INFO  DIALOG-->
+  <p-dialog [(visible)]="RequestInfoEditDialog" [modal]="true" header="Request Details">
+
+    <app-request-info-form [form]="requestForm"></app-request-info-form>
+
+    <ng-template #footer>
+      <p-button label="Close" icon="pi pi-times" severity="secondary" (click)="hideRequestInfoEdit()" />
+      <p-button label="Save" icon="pi pi-check" type="submit" (click)="saveRequestUpdate(currentlyEditingRequestId!)" />
+    </ng-template>
+  </p-dialog>
+
+
+  <!-- SESSION INFORMATION DIALOG -->
+  <p-dialog [(visible)]="SessionInfoDialogue" [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" header="Session Details" [modal]="true">
+    <ng-template #content>
+
+      <app-session-info-form [form]="sessionForm"></app-session-info-form>
+
+    </ng-template>
+
+    <ng-template #footer>
+      <p-button label="Cancel" icon="pi pi-times" text (click)="hideSessionInfoDialogue()" size="small" />
+      <p-button label="Save" (click)="saveSessionUpdate(currentlyEditingSessionsId!)" icon="pi pi-check" size="small" />
+    </ng-template>
+  </p-dialog>
+
+
+  <!-- SESSION RATING DIALOG  -->
+  <p-dialog [(visible)]="SessionRatingDialogue" [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [modal]="true" header="Rate Session">
+
+    <app-session-rating-to-mentor-info-form [form]="sessionRatingForm" />
+
+    <ng-template #footer>
+      <p-button label="Accept" icon="pi pi-check" (click)="updateRatingAndFeedback(currentlyEditingSessionsId!)" />
+    </ng-template>
+  </p-dialog>
+
+</div>

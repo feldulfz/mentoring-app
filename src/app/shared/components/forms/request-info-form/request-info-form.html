@@ -1,0 +1,47 @@
+   <form [formGroup]="form()" class="flex flex-col gap-4 p-4">
+
+        <div class="flex gap-4">
+          <div class="flex flex-col gap-2 flex-1">
+            <label>Date</label>
+            <p-datepicker formControlName="date" [showIcon]="true" [disabled]="true"></p-datepicker>
+          </div>
+
+          <div class="flex flex-col gap-2 flex-1">
+            <label>Start At</label>
+
+            <p-datepicker formControlName="startAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true"
+              inputId="startTime" placeholder="Start Time" fluid appendTo="body" [hourFormat]="'12'" required>
+              <ng-template #inputicon let-clickCallBack="clickCallBack">
+                <i class="pi pi-clock"></i>
+              </ng-template>
+            </p-datepicker>
+          </div>
+
+          <div class="flex flex-col gap-2 flex-1">
+            <label>Start At</label>
+
+            <p-datepicker formControlName="endAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="startTime"
+              placeholder="End Time" fluid appendTo="body" [hourFormat]="'12'" required>
+              <ng-template #inputicon let-clickCallBack="clickCallBack">
+                <i class="pi pi-clock"></i>
+              </ng-template>
+            </p-datepicker>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label>Mentee</label>
+          <input type="text" pInputText formControlName="menteeName"  [disabled]="true"/>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label>Goal</label>
+          <input type="text" pInputText  [disabled]="true" formControlName="goal"/>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label>Message</label>
+          <textarea rows="3" pTextarea [disabled]="true" formControlName="message"  ></textarea>
+        </div>
+
+      </form>

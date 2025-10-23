@@ -1,0 +1,73 @@
+
+
+<form [formGroup]="form()">
+  <div class="flex flex-col gap-6">
+
+    <div class="flex flex-col gap-2">
+      <label for="menteeName">Mentee</label>
+      <input type="text" formControlName="menteeName" pInputText pSize="small" />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="topic">About</label>
+      <input type="text" pInputText [disabled]="true" formControlName="topic" pSize="small" />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="description">Message</label>
+      <textarea rows="3" formControlName="message" pSize="small" cols="30" pTextarea></textarea>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3">
+      <div class="flex flex-col gap-2">
+        <label for="username">Date</label>
+        <p-datepicker [showIcon]="true" formControlName="date" inputId="buttondisplay" [showOnFocus]="false"
+          size="small" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="username">Start At</label>
+        <p-datepicker formControlName="startAt" size="small" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true"
+          inputId="startTime" placeholder="Start Time" fluid appendTo="body" [hourFormat]="'12'" required>
+          <ng-template #inputicon let-clickCallBack="clickCallBack">
+            <i class="pi pi-clock"></i>
+          </ng-template>
+        </p-datepicker>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="username">End At</label>
+        <p-datepicker formControlName="endAt" size="small" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true"
+          inputId="startTime" placeholder="Start Time" fluid appendTo="body" [hourFormat]="'12'" required>
+          <ng-template #inputicon let-clickCallBack="clickCallBack">
+            <i class="pi pi-clock"></i>
+          </ng-template>
+        </p-datepicker>
+      </div>
+
+    </div>
+
+    <p-divider type="solid" />
+
+    <div class="flex flex-col gap-2">
+      <label for="menteeName">Mentor</label>
+      <input type="text" formControlName="mentorName" pInputText pSize="small" />
+    </div>
+
+
+    <div class="flex flex-col gap-2">
+      <label for="meetingLink">Meeting Link</label>
+
+      <p-iconfield class="w-full">
+        <p-inputIcon class="pi pi-link" />
+        <input pInputText formControlName="meetinglink" placeholder="" pSize="small" />
+      </p-iconfield>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="sharedNote">Shared Note</label>
+      <textarea rows="3" formControlName="sharedNotes" cols="30" pTextarea></textarea>
+    </div>
+
+  </div>
+</form>

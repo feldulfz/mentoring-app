@@ -1,0 +1,811 @@
+<h1 class="text-xl sm:text-2xl font-bold mb-5">Sechedule</h1>
+
+<div class="">
+    <p-tabs value="0" scrollable>
+        <p-tablist>
+            <ng-template #previcon>
+                <i class="pi pi-minus"></i>
+            </ng-template>
+
+            <p-tab value="0" class="flex items-center !gap-2">
+                <span class="font-bold whitespace-nowrap">Available</span>
+                @if(mentorAvailableSched().length) {
+                <p-badge [value]="mentorAvailableSched().length" />
+                }
+            </p-tab>
+
+            <p-tab value="1" class="flex items-center !gap-2">
+                <span class="font-bold whitespace-nowrap">Booked</span>
+                @if(mentorBookedSched().length) {
+                <p-badge [value]="mentorBookedSched().length" />
+                }
+            </p-tab>
+
+            <p-tab value="2" class="flex items-center !gap-2">
+                <span class="font-bold whitespace-nowrap">Completed</span>
+                @if(mentorCompletedSched().length) {
+                <p-badge [value]="mentorCompletedSched().length" />
+                }
+            </p-tab>
+
+            <p-tab value="3" class="flex items-center !gap-2">
+                <span class="font-bold whitespace-nowrap">Canceled</span>
+                @if(mentorCancelledSched().length) {
+                <p-badge [value]="mentorCancelledSched().length" />
+                }
+            </p-tab>
+
+
+            <p-tab value="4" class="flex items-center !gap-2">
+                <span class="font-bold whitespace-nowrap">Expired</span>
+                @if(mentorExpiredSched().length) {
+                <p-badge [value]="mentorExpiredSched().length" />
+                }
+            </p-tab>
+
+            <ng-template #nexticon>
+                <i class="pi pi-plus"></i>
+            </ng-template>
+        </p-tablist>
+
+        <p-tabpanels>
+
+            <p-tabpanel value="0">
+                <p-table #dt [value]="mentorAvailableSched()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+                    [paginator]="true"
+                    [globalFilterFields]="['startAt', 'endAt', 'status']"
+                    [tableStyle]="{ 'min-width': '75rem' }">
+
+                    <ng-template pTemplate="caption">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <p-button label="Add Schedule" icon="pi pi-plus" class="mr-2" size="small"
+                                    (onClick)="openNew()" />
+                                <p-button severity="danger" label="Delete" icon="pi pi-trash" size="small" outlined />
+                            </div>
+                            <div>
+                                <p-iconfield iconPosition="left">
+                                    <p-inputicon>
+                                        <i class="pi pi-search"></i>
+                                    </p-inputicon>
+                                    <input pInputText type="text"
+                                        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                                        placeholder="Search keyword" />
+                                </p-iconfield>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem">
+                                <p-tableHeaderCheckbox />
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Date
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Time
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="status">
+                                Status
+                                <p-sortIcon field="status"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="createdAt">
+                                Created
+                                <p-sortIcon field="createdAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%">Action</th>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-slot>
+                        <tr>
+                            <td style="width: 3rem">
+                                <p-tableCheckbox [value]="slot" />
+                            </td>
+
+                            <td>
+                                {{ slot.startAt | date: 'MMM d, y' }}
+                            </td>
+
+                            <td>
+                                @if(slot.startAt && slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }} - {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                                @else if(slot.startAt && !slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }}
+                                }
+                                @else if(!slot.startAt && slot.endAt) {
+                                    {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                            </td>
+
+                            <td>
+                                <p-tag [value]="slot.status" [severity]="slotStatus(slot.status)" />
+                            </td>
+
+                            <td>
+                                {{ slot.createdAt | date: 'MMM d, y, h:mm a' }}
+                            </td>
+
+                            <td class="flex gap-2">
+                                <p-button icon="pi pi-pencil"
+                                [rounded]="true" [outlined]="true"
+                                size="small"
+                                (click)="editSlot(slot)" />
+
+                                <p-button
+                                    [icon]="slot.status === 'available' ? 'pi pi-ban' : 'pi pi-check-circle'"
+                                    [severity]="slot.status === 'available' ? 'warn' : 'success'"
+                                    [rounded]="true"
+                                    [outlined]="true"
+                                    size="small"
+                                    pTooltip="{{ slot.status === 'available' ? 'Mark as Cancelled' : 'Mark as Available' }}"
+                                    tooltipPosition="top"
+                                    (click)="confirmToggle(slot)"
+                                        />
+
+
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    [rounded]="true"
+                                    [outlined]="true" size="small"
+                                    (click)="deleteSlot(slot)"
+                                    />
+                            </td>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="6">No schedule yet.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabpanel>
+
+            <p-tabpanel value="1">
+                <p-table #dt [value]="mentorBookedSched()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+                    [paginator]="true"
+                    [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+                    [tableStyle]="{ 'min-width': '75rem' }">
+
+                    <ng-template pTemplate="caption">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <p-button label="Add Schedule" icon="pi pi-plus" class="mr-2" size="small"
+                                    (onClick)="openNew()" />
+                                <p-button severity="danger" label="Delete" icon="pi pi-trash" size="small" outlined />
+                            </div>
+                            <div>
+                                <p-iconfield iconPosition="left">
+                                    <p-inputicon>
+                                        <i class="pi pi-search"></i>
+                                    </p-inputicon>
+                                    <input pInputText type="text"
+                                        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                                        placeholder="Search keyword" />
+                                </p-iconfield>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem">
+                                <p-tableHeaderCheckbox />
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Date
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Time
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="status">
+                                Status
+                                <p-sortIcon field="status"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="createdAt">
+                                Created
+                                <p-sortIcon field="createdAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%">Action</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-slot>
+                        <tr>
+                            <td style="width: 3rem">
+                                <p-tableCheckbox [value]="slot" />
+                            </td>
+
+                            <td>
+                                {{ slot.startAt | date: 'MMM d, y' }}
+                            </td>
+
+                            <td>
+                                @if(slot.startAt && slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }} - {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                                @else if(slot.startAt && !slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }}
+                                }
+                                @else if(!slot.startAt && slot.endAt) {
+                                    {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                            </td>
+
+                            <td>
+                                <p-tag [value]="slot.status" [severity]="slotStatus(slot.status)" />
+                            </td>
+
+                            <td>
+                                {{ slot.createdAt | date: 'MMM d, y, h:mm a' }}
+                            </td>
+
+                            <td class="flex gap-2">
+                                <p-button icon="pi pi-pencil"
+                                [rounded]="true" [outlined]="true"
+                                size="small"
+                                (click)="editSlot(slot)" />
+
+                                <p-button
+                                    [icon]="slot.status === 'available' ? 'pi pi-ban' : 'pi pi-check-circle'"
+                                    [severity]="slot.status === 'available' ? 'warn' : 'success'"
+                                    [rounded]="true"
+                                    [outlined]="true"
+                                    size="small"
+                                    pTooltip="{{ slot.status === 'available' ? 'Mark as Cancelled' : 'Mark as Available' }}"
+                                    tooltipPosition="top"
+                                    (click)="confirmToggle(slot)"
+                                    />
+
+
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    [rounded]="true"
+                                    [outlined]="true" size="small"
+                                    (click)="deleteSlot(slot)"
+                                    />
+                            </td>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="3">No schedule yet.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabpanel>
+
+            <p-tabpanel value="2">
+                <p-table #dt [value]="mentorCompletedSched()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+                    [paginator]="true"
+                    [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+                    [tableStyle]="{ 'min-width': '75rem' }">
+
+                    <ng-template pTemplate="caption">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <p-button label="Add Schedule" icon="pi pi-plus" class="mr-2" size="small"
+                                    (onClick)="openNew()" />
+                                <p-button severity="danger" label="Delete" icon="pi pi-trash" size="small" outlined />
+                            </div>
+                            <div>
+                                <p-iconfield iconPosition="left">
+                                    <p-inputicon>
+                                        <i class="pi pi-search"></i>
+                                    </p-inputicon>
+                                    <input pInputText type="text"
+                                        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                                        placeholder="Search keyword" />
+                                </p-iconfield>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem">
+                                <p-tableHeaderCheckbox />
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Date
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Time
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="status">
+                                Status
+                                <p-sortIcon field="status"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="createdAt">
+                                Created
+                                <p-sortIcon field="createdAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%">Action</th>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-slot>
+                        <tr>
+                            <td style="width: 3rem">
+                                <p-tableCheckbox [value]="slot" />
+                            </td>
+
+                            <td>
+                                {{ slot.startAt | date: 'MMM d, y' }}
+                            </td>
+
+                            <td>
+                                @if(slot.startAt && slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }} - {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                                @else if(slot.startAt && !slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }}
+                                }
+                                @else if(!slot.startAt && slot.endAt) {
+                                    {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                            </td>
+
+                            <td>
+                                <p-tag [value]="slot.status" [severity]="slotStatus(slot.status)" />
+                            </td>
+
+                            <td>
+                                {{ slot.createdAt | date: 'MMM d, y, h:mm a' }}
+                            </td>
+
+                            <td class="flex gap-2">
+                                <p-button icon="pi pi-pencil"
+                                [rounded]="true" [outlined]="true"
+                                size="small"
+                                (click)="editSlot(slot)" />
+
+                                <p-button
+                                    [icon]="slot.status === 'available' ? 'pi pi-ban' : 'pi pi-check-circle'"
+                                    [severity]="slot.status === 'available' ? 'warn' : 'success'"
+                                    [rounded]="true"
+                                    [outlined]="true"
+                                    size="small"
+                                    pTooltip="{{ slot.status === 'available' ? 'Mark as Cancelled' : 'Mark as Available' }}"
+                                    tooltipPosition="top"
+                                    (click)="confirmToggle(slot)"
+                                        />
+
+
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    [rounded]="true"
+                                    [outlined]="true" size="small"
+                                    (click)="deleteSlot(slot)"
+                                        />
+                            </td>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="3">No schedule yet.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabpanel>
+
+            <p-tabpanel value="3">
+                <p-table #dt [value]="mentorCancelledSched()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+                    [paginator]="true"
+                    [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+                    [tableStyle]="{ 'min-width': '75rem' }">
+
+                    <ng-template pTemplate="caption">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <p-button label="Add Schedule" icon="pi pi-plus" class="mr-2" size="small"
+                                    (onClick)="openNew()" />
+                                <p-button severity="danger" label="Delete" icon="pi pi-trash" size="small" outlined />
+                            </div>
+                            <div>
+                                <p-iconfield iconPosition="left">
+                                    <p-inputicon>
+                                        <i class="pi pi-search"></i>
+                                    </p-inputicon>
+                                    <input pInputText type="text"
+                                        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                                        placeholder="Search keyword" />
+                                </p-iconfield>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem">
+                                <p-tableHeaderCheckbox />
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Date
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Time
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="status">
+                                Status
+                                <p-sortIcon field="status"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="createdAt">
+                                Created
+                                <p-sortIcon field="createdAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%">Action</th>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-slot>
+                        <tr>
+                            <td style="width: 3rem">
+                                <p-tableCheckbox [value]="slot" />
+                            </td>
+
+                            <td>
+                                {{ slot.startAt | date: 'MMM d, y' }}
+                            </td>
+
+                            <td>
+                                @if(slot.startAt && slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }} - {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                                @else if(slot.startAt && !slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }}
+                                }
+                                @else if(!slot.startAt && slot.endAt) {
+                                    {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                            </td>
+
+                            <td>
+                                <p-tag [value]="slot.status" [severity]="slotStatus(slot.status)" />
+                            </td>
+
+                            <td>
+                                {{ slot.createdAt | date: 'MMM d, y, h:mm a' }}
+                            </td>
+
+                            <td class="flex gap-2">
+                                <p-button icon="pi pi-pencil"
+                                [rounded]="true" [outlined]="true"
+                                size="small"
+                                (click)="editSlot(slot)" />
+
+                                <p-button
+                                    [icon]="slot.status === 'available' ? 'pi pi-ban' : 'pi pi-check-circle'"
+                                    [severity]="slot.status === 'available' ? 'warn' : 'success'"
+                                    [rounded]="true"
+                                    [outlined]="true"
+                                    size="small"
+                                    pTooltip="{{ slot.status === 'available' ? 'Mark as Cancelled' : 'Mark as Available' }}"
+                                    tooltipPosition="top"
+                                    (click)="confirmToggle(slot)"
+                                        />
+
+
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    [rounded]="true"
+                                    [outlined]="true" size="small"
+                                    (click)="deleteSlot(slot)"
+                                        />
+                            </td>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="3">No schedule yet.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabpanel>
+
+            <p-tabpanel value="4">
+                <p-table #dt [value]="mentorExpiredSched()" dataKey="slotId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+                    [paginator]="true"
+                    [globalFilterFields]="['mentorProfile.first_name', 'mentorProfile.last_name', 'status']"
+                    [tableStyle]="{ 'min-width': '75rem' }">
+
+                    <ng-template pTemplate="caption">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <p-button label="Add Schedule" icon="pi pi-plus" class="mr-2" size="small"
+                                    (onClick)="openNew()" />
+                                <p-button severity="danger" label="Delete" icon="pi pi-trash" size="small" outlined />
+                            </div>
+                            <div>
+                                <p-iconfield iconPosition="left">
+                                    <p-inputicon>
+                                        <i class="pi pi-search"></i>
+                                    </p-inputicon>
+                                    <input pInputText type="text"
+                                        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                                        placeholder="Search keyword" />
+                                </p-iconfield>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem">
+                                <p-tableHeaderCheckbox />
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Date
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="startAt">
+                                Time
+                                <p-sortIcon field="startAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="status">
+                                Status
+                                <p-sortIcon field="status"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%" pSortableColumn="createdAt">
+                                Created
+                                <p-sortIcon field="createdAt"></p-sortIcon>
+                            </th>
+
+                            <th style="width:20%">Action</th>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-slot>
+                        <tr>
+                            <td style="width: 3rem">
+                                <p-tableCheckbox [value]="slot" />
+                            </td>
+
+                            <td>
+                                {{ slot.startAt | date: 'MMM d, y' }}
+                            </td>
+
+                            <td>
+                                @if(slot.startAt && slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }} - {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                                @else if(slot.startAt && !slot.endAt) {
+                                    {{ slot.startAt | date: 'h:mm a' }}
+                                }
+                                @else if(!slot.startAt && slot.endAt) {
+                                    {{ slot.endAt | date: 'h:mm a' }}
+                                }
+                            </td>
+
+                            <td>
+                                <p-tag [value]="slot.status" [severity]="slotStatus(slot.status)" />
+                            </td>
+
+                            <td>
+                                {{ slot.createdAt | date: 'MMM d, y, h:mm a' }}
+                            </td>
+
+                            <td class="flex gap-2">
+                                <p-button icon="pi pi-pencil"
+                                [rounded]="true" [outlined]="true"
+                                size="small"
+                                (click)="editSlot(slot)" />
+
+                                <p-button
+                                    [icon]="slot.status === 'available' ? 'pi pi-ban' : 'pi pi-check-circle'"
+                                    [severity]="slot.status === 'available' ? 'warn' : 'success'"
+                                    [rounded]="true"
+                                    [outlined]="true"
+                                    size="small"
+                                    pTooltip="{{ slot.status === 'available' ? 'Mark as Cancelled' : 'Mark as Available' }}"
+                                    tooltipPosition="top"
+                                    (click)="confirmToggle(slot)"
+                                         />
+
+
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    [rounded]="true"
+                                    [outlined]="true" size="small"
+                                    (click)="deleteSlot(slot)"
+                                        />
+                            </td>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="3">No schedule yet.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabpanel>
+
+        </p-tabpanels>
+    </p-tabs>
+
+    <p-dialog [(visible)]="addNewSched" [style]="{ width: '450px' }" header="Add New Schedule" [modal]="true">
+        <ng-template #content>
+            <div class="flex flex-col gap-6">
+                <!-- Session Date -->
+                <div>
+                    <label class="block font-bold mb-2">Session Date</label>
+                    <p-datepicker
+                        [(ngModel)]="slotForm.startAt"
+                        [showIcon]="true"
+                        [showOnFocus]="false"
+                        inputId="sessionDate"
+                        placeholder="Pick date"
+                        dateFormat="yy-mm-dd"
+                        fluid
+                        appendTo="body"
+                        required
+                        (ngModelChange)="onDateChange($event)"
+                        />
+                        @if(formSubmitted() && !newSlot().startAt) {
+                            <small class="text-red-500">Session date is required</small>
+                        }
+                </div>
+
+                <!-- Start & End Time -->
+                <div class="grid grid-cols-12 gap-4">
+                    <div class="col-span-6">
+                        <label class="block font-bold mb-2">Start Time</label>
+                        <p-datepicker
+                            [(ngModel)]="slotForm.startAt"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [timeOnly]="true"
+                            inputId="startTime"
+                            placeholder="Start Time"
+                            fluid
+                            appendTo="body"
+                            [hourFormat]="'12'"
+                            required
+                            >
+                            <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                            </ng-template>
+                        </p-datepicker>
+                        @if(formSubmitted() && !newSlot().startAt) {
+                            <small class="text-red-500">Start time is required</small>
+                        }
+                        @if(formSubmitted() && invalidTime()) {
+                            <small class="text-red-500">Invalid time range.</small>
+                        }
+                    </div>
+
+                    <div class="col-span-6">
+                        <label class="block font-bold mb-2">End Time</label>
+                        <p-datepicker
+                            [(ngModel)]="slotForm.endAt"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [timeOnly]="true"
+                            inputId="endTime"
+                            placeholder="End Time"
+                            fluid
+                            appendTo="body"
+                            [hourFormat]="'12'"
+                            required
+                            >
+                            <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                            </ng-template>
+                        </p-datepicker>
+                        @if(formSubmitted() && !newSlot().endAt) {
+                            <small class="text-red-500">End time is required</small>
+                        }
+                        @if(formSubmitted() && invalidTime()) {
+                            <small class="text-red-500">Invalid time range.</small>
+                        }
+                    </div>
+
+                </div>
+
+                <!-- Recurring Section -->
+                <div>
+                    <span class="block font-bold mb-3">Recurring (Weekly)</span>
+                    <div class="flex gap-6">
+                        <div class="flex items-center gap-2">
+                        <p-radiobutton
+                            inputId="recurringYes"
+                            name="recurring"
+                            [value]="true"
+                            [(ngModel)]="slotForm.recurring"
+                        />
+                        <label for="recurringYes">Yes</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                        <p-radiobutton
+                            inputId="recurringNo"
+                            name="recurring"
+                            [value]="false"
+                            [(ngModel)]="slotForm.recurring"
+                        />
+                        <label for="recurringNo">No</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </ng-template>
+
+        <ng-template #footer>
+            <p-button
+                label="Cancel"
+                icon="pi pi-times"
+                text
+                (click)="hideDialog()"
+                size="small"
+                [disabled]="isSubmitting()" />
+
+            <p-button
+                label="Save"
+                icon="pi pi-check"
+                (click)="saveProduct()"
+                size="small"
+                [loading]="isSubmitting()"
+                [disabled]="isSubmitting()"/>
+        </ng-template>
+
+    </p-dialog>
+
+
+    <p-confirmDialog [style]="{ width: '450px' }" />
+
+    <p-toast position="top-right"></p-toast>
+</div>

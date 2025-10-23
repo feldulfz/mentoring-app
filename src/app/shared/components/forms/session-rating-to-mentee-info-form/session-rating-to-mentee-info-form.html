@@ -1,0 +1,33 @@
+  <form [formGroup]="form()" class="flex flex-col gap-y-8 p-4">
+
+      <div class="flex justify-center items-center flex-col gap-y-5">
+        <label class="font-normal">Rating to Mentee
+        </label>
+        <p-rating formControlName="ratingToMentee" [stars]="5" required name="ratingValue" size="large"
+          style="--p-rating-icon-size: 2rem; --p-rating-icon-active-color: #facc15;	" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="font-normal">Leave a Feedback to Mentee ...</label>
+        <textarea rows="3" formControlName="feedbackToMentee" pTextarea [disabled]="true"></textarea>
+      </div>
+
+      <p-fieldset class="">
+        <ng-template #header>
+          <div class="flex items-center gap-2 px-2">
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+            <span class="font-bold "> Mentee
+              {{ form().value.mentorName || '' }}
+            </span>
+          </div>
+        </ng-template>
+
+
+        <p class="m-0">
+          <p-rating formControlName="ratingToMentor" readonly="true" [stars]="5" required name="ratingValue" size="large"
+            style="--p-rating-icon-size: 1.5rem; --p-rating-icon-active-color: #facc15;	" />
+          <br>
+          {{ form().value.feedbackToMentor || 'No feedback available.' }}
+        </p>
+      </p-fieldset>
+    </form>
