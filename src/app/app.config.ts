@@ -19,12 +19,12 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(),
     provideRouter(routes), provideFirebaseApp(() => initializeApp({
-      projectId: "mentoring-platform-app-2d7d1",
-      appId: "1:655054895714:web:2e0689d0dc6e93f52e2f3b",
-      storageBucket: "mentoring-platform-app-2d7d1.firebasestorage.app",
-      apiKey: "AIzaSyAkRZV53MVkysATJqp9__8f1GpPB3q2r74",
-      authDomain: "mentoring-platform-app-2d7d1.firebaseapp.com",
-      messagingSenderId: "655054895714"
+      apiKey: "AIzaSyDvgLaoC79HkAhhHDergATqqkbOFp0_dsg",
+      authDomain: "mentoring-app-d7b12.firebaseapp.com",
+      projectId: "mentoring-app-d7b12",
+      storageBucket: "mentoring-app-d7b12.firebasestorage.app",
+      messagingSenderId: "1082143753631",
+      appId: "1:1082143753631:web:31f68c899227885f2269aa"
     })), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideStorage(() => getStorage()),
     provideAnimationsAsync(),
     providePrimeNG({

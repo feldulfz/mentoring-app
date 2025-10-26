@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
+import { Component, HostListener, inject, input, Input, output, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,12 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 
 import { SelectModule } from 'primeng/select';
+
+export interface IQueryParam {
+  query: string
+  skill: string
+  jobTitle: string
+}
 
 @Component({
   selector: 'app-search-bar',
@@ -18,10 +24,10 @@ import { SelectModule } from 'primeng/select';
 export class SearchBarComponent {
   private route = inject(ActivatedRoute);
 
-  @Output() searchSubmit = new EventEmitter<any>();
-  @Input() syncWithParams = false;
+  searchSubmit = output<IQueryParam>();
+  syncWithParams = input<boolean>(false);
 
-  dropdownOpen = false;
+  dropdownOpen = signal<boolean>(false);
   searchTerm = '';
   selectedSkill = '';
   selectedJobTitle = '';
@@ -44,9 +50,8 @@ export class SearchBarComponent {
     'Project Manager',
   ];
 
-
   ngOnInit() {
-    if (this.syncWithParams) {
+    if (this.syncWithParams()) {
       this.route.queryParams.subscribe((params) => {
         this.searchTerm = params['q'] || '';
         this.selectedSkill = params['skill'] || '';
@@ -56,20 +61,20 @@ export class SearchBarComponent {
   }
 
   toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
+    this.dropdownOpen.update(v => !v);
   }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
     const target = event.target as HTMLElement;
     if (!target.closest('.relative')) {
-      this.dropdownOpen = false;
+      this.dropdownOpen.set(false);
     }
   }
 
   applyFilters(event: Event) {
     event.preventDefault();
-    this.dropdownOpen = false;
+    this.dropdownOpen.set(false);
     this.submitSearch();
   }
 
