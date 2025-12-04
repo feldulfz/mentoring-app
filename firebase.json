@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "feldulfz/mentoring-app",
+    "public": "feldulfz/mentoring-app/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
