@@ -254,9 +254,185 @@ export const environment = {
 
 ### Mentor Create Schedule
 
-![mentor_14](ReadMeImages/mentor_14.png 'mentor_14')
+![mentee_1](ReadMeImages/mentor_14.png 'mentor_14')
 
 ![mentor_15](ReadMeImages/mentor_15.png 'mentor_15')
 
 ![mentor_16](ReadMeImages/mentor_16.png 'mentor_16')
+
+---
+
+### Mentee Registration (Manual)
+
+![mentee_1](ReadMeImages/mentee_1.png 'mentee_1')
+
+![mentee_2](ReadMeImages/mentee_2.png 'mentee_2')
+
+### Mentee Registration (With google sign-in)
+
+![mentee_3](ReadMeImages/mentee_3.png 'mentee_3')
+
+![mentee_4](ReadMeImages/mentee_4.png 'mentee_4')
+
+![mentee_5](ReadMeImages/mentee_5.png 'mentee_5')
+
+![mentee_6](ReadMeImages/mentee_6.png 'mentee_6')
+
+![mentee_7](ReadMeImages/mentee_7.png 'mentee_7')
+
+### Mentee Landing Page
+
+![mentee_8](ReadMeImages/mentee_8.png 'mentee_8')
+
+### Mentee Profile
+
+![mentee_9](ReadMeImages/mentee_9.png 'mentee_9')
+
+### Select Top Rated Mentor
+
+![mentee_10](ReadMeImages/mentee_10.png 'mentee_10')
+
+![mentee_11](ReadMeImages/mentee_11.png 'mentee_11')
+
+### Search Mentor By Filter
+
+![mentee_12](ReadMeImages/mentee_12.png 'mentee_12')
+
+![mentee_13](ReadMeImages/mentee_13.png 'mentee_13')
+
+![mentee_14](ReadMeImages/mentee_14.png 'mentee_14')
+
+### Search Mentor By Search Bar
+
+![mentee_15](ReadMeImages/mentee_15.png 'mentee_15')
+
+![mentee_16](ReadMeImages/mentee_16.png 'mentee_16')
+
+![mentee_17](ReadMeImages/mentee_17.png 'mentee_17')
+
+---
+
+### Book A Mentor
+
+![mentee_18](ReadMeImages/mentee_18.png 'mentee_18')
+
+![mentee_19](ReadMeImages/mentee_19.png 'mentee_19')
+
+![mentee_20](ReadMeImages/mentee_20.png 'mentee_20')
+
+### Select Date & Time
+
+![mentee_21](ReadMeImages/mentee_21.png 'mentee_21')
+
+![mentee_22](ReadMeImages/mentee_22.png 'mentee_22')
+
+### Input Session Goal
+
+![mentee_23](ReadMeImages/mentee_23.png 'mentee_23')
+
+### Success Booking
+
+![mentee_24](ReadMeImages/mentee_24.png 'mentee_24')
+
+### Booking Dashboard
+
+![mentee_25](ReadMeImages/mentee_25.png 'mentee_25')
+
+![mentee_26](ReadMeImages/mentee_26.png 'mentee_26')
+
+![mentee_27](ReadMeImages/mentee_27.png 'mentee_27')
+
+---
+
+### Approve Mentee Booking
+
+![apr_ses_1](ReadMeImages/apr_ses_1.png 'apr_ses_1')
+
+![apr_ses_2](ReadMeImages/apr_ses_2.png 'apr_ses_2')
+
+![apr_ses_3](ReadMeImages/apr_ses_3.png 'apr_ses_3')
+
+![apr_ses_4](ReadMeImages/apr_ses_4.png 'apr_ses_4')
+
+### Mentor Upcomming Session
+
+![apr_ses_5](ReadMeImages/apr_ses_5.png 'apr_ses_5')
+
+![apr_ses_6](ReadMeImages/apr_ses_6.png 'apr_ses_6')
+
+### Mentee Upcomming Session
+
+![apr_ses_7](ReadMeImages/apr_ses_7.png 'apr_ses_7')
+
+### Mentor set video call link for session
+
+![apr_ses_8](ReadMeImages/apr_ses_8.png 'apr_ses_8')
+
+![apr_ses_9](ReadMeImages/apr_ses_9.png 'apr_ses_9')
+
+### Mentee can now see mentor message and join meeting
+
+![apr_ses_10](ReadMeImages/apr_ses_10.png 'apr_ses_10')
+
+![apr_ses_11](ReadMeImages/apr_ses_11.png 'apr_ses_11')
+
+![apr_ses_12](ReadMeImages/apr_ses_12.png 'apr_ses_12')
+
+---
+
+### Mentor mark session as complete
+
+![done_ses_1](ReadMeImages/done_ses_1.png 'done_ses_1')
+
+![done_ses_2](ReadMeImages/done_ses_2.png 'done_ses_2')
+
+![done_ses_3](ReadMeImages/done_ses_3.png 'done_ses_3')
+
+![done_ses_4](ReadMeImages/done_ses_4.png 'done_ses_4')
+
+### Mentee rate & review mentor
+
+![done_ses_5](ReadMeImages/done_ses_5.png 'done_ses_5')
+
+![done_ses_6](ReadMeImages/done_ses_6.png 'done_ses_6')
+
+![done_ses_7](ReadMeImages/done_ses_7.png 'done_ses_7')
+
+### Mentor rate & review mentee
+
+![done_ses_8](ReadMeImages/done_ses_8.png 'done_ses_8')
+
+![done_ses_9](ReadMeImages/done_ses_9.png 'done_ses_9')
+
+### Mentor rate & review per session
+
+![done_ses_11](ReadMeImages/done_ses_11.png 'done_ses_11')
+
+![done_ses_12](ReadMeImages/done_ses_12.png 'done_ses_12')
+
+![done_ses_13](ReadMeImages/done_ses_13.png 'done_ses_13')
+
+![done_ses_14](ReadMeImages/done_ses_14.png 'done_ses_14')
+
+### Mentee view for completed session
+
+![done_ses_10](ReadMeImages/done_ses_10.png 'done_ses_10')
+
+### Mentor profile
+
+![done_ses_15](ReadMeImages/done_ses_15.png 'done_ses_15')
+
+### Mentor profile no available schedule because it's already booked and completed
+
+![done_ses_16](ReadMeImages/done_ses_16.png 'done_ses_16')
+
+---
+
+## Contributions
+
+Thanks to my pair Daniel Mengote for colaboration with this project and to Angular PH Mentors.
+
+- Daniel Mengote [Github](https://github.com/DanielMengote)
+- Angular PH [Facebook](https://www.facebook.com/AngularPhilippines)
+- First Draft of the Project [Github](https://github.com/DanielMengote/Mentoring-Application)
 
