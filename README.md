@@ -5,6 +5,7 @@
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![PrimeNG](https://img.shields.io/badge/PrimeNG-000000?style=for-the-badge&logo=primeng&logoColor=white)
+![GitHub_Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 A comprehensive mentoring platform built with Angular and Firebase, designed to connect mentees with expert mentors for professional growth and knowledge sharing.
 
